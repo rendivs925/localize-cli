@@ -48,6 +48,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let source_dir = args.source.clone();
         let output_dir = args.output.clone();
         let url = args.url.clone();
+        let token = args.token.clone();
+
         async move {
             println!("Translating {:?}", file);
             if let Err(e) = translate_file(
