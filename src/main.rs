@@ -112,7 +112,7 @@ async fn translate_file(
             let sem = semaphore.clone();
             futures.push(async move {
                 let _permit = sem.acquire_owned().await.unwrap();
-                let translated = fetch_translation(&client, &url, &text, &lang)
+                let translated = fetch_translation(&client, &url, &text, &lang, &token)
                     .await
                     .unwrap_or_else(|_| text.clone());
                 (text, translated)
