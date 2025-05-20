@@ -1,0 +1,23 @@
+[package]
+name = "localize-cli"
+version = "0.1.0"
+edition = "2024"
+authors = ["Rendi Virgantara Setiawan rendivirgantarasetiawan123@gmail.com"]
+description = "A CLI tool for automatic translation of JSON localization files"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rendivs925/localize-cli"
+homepage = "https://github.com/rendivs925/localize-cli"
+keywords = ["localization", "translation", "cli", "json"]
+categories = ["command-line-utilities", "localization"]
+
+[dependencies]
+clap = { version = "4.5.38", features = ["derive"] }
+futures = "0.3.31"
+reqwest = { version = "0.12.15", features = ["json"] }
+serde_json = "1.0.140"
+tokio = { version = "1.45.0", features = ["full"] }
+walkdir = "2.5.0"
+
+[[bin]]
+name = "localize-cli"
+path = "src/main.rs"
