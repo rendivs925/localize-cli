@@ -28,6 +28,9 @@ struct Args {
 
     #[arg(short = 'u', long, default_value = "http://localhost:5000/translate")]
     url: String,
+
+    #[arg(long, default_value = "")]
+    token: String,
 }
 
 #[tokio::main]
@@ -87,6 +90,7 @@ async fn translate_file(
     output_dir: &str,
     url: &str,
     file_path: &Path,
+    token: &str,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let file_content = fs::read_to_string(file_path)?;
     let json: Value = serde_json::from_str(&file_content)?;
@@ -151,6 +155,7 @@ async fn fetch_translation(
     url: &str,
     text: &str,
     target_lang: &str,
+    token: &str,
 ) -> Result<String, reqwest::Error> {
     let payload = json!({
         "q": text,
@@ -159,13 +164,12 @@ async fn fetch_translation(
         "format": "text"
     });
 
-    let res = client
-        .post(url)
-        .header("Content-Type", "application/json")
-        .json(&payload)
-        .send()
-        .await?;
+    let mut request = client.post(url).json(&payload);
+    if !token.is_empty() {
+        request = request.header("Authorization", format!("Bearer {}", token));
+    }
 
+    let res = request.send().await?;
     let body: Value = res.json().await?;
     Ok(body["translatedText"].as_str().unwrap_or(text).to_string())
 }
