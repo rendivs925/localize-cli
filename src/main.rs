@@ -58,6 +58,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 &output_dir,
                 &url,
                 &file,
+                &token,
             )
             .await
             {
